@@ -109,7 +109,7 @@
 
 (define (toplevel-only-expr? e)
   (and (pair? e)
-       (or (memq (car e) '(toplevel line module import importall using export
+       (or (memq (car e) '(toplevel line module import using export
                                     error incomplete))
            (and (eq? (car e) 'global) (every symbol? (cdr e))
                 (every (lambda (x) (not (memq x '(true false)))) (cdr e))))))
@@ -140,15 +140,6 @@
           (block
            ,loc
            (call (core eval) ,name ,x)))
-       (if (&& (call (top isdefined) (core Main) (quote Base))
-               (call (top isdefined) (|.| (core Main) (quote Base)) (quote @deprecate)))
-           (call eval
-                 (quote
-                  (macrocall (|.| (|.| (core Main) (quote Base)) (quote @deprecate))
-                             (line 0 none)
-                             (call eval m x)
-                             (call (|.| Core (quote eval)) m x) ; should be (core eval), but format as Core.eval(m, x) for deprecation warning
-                             false))))
        (= (call include ,x)
           (block
            ,loc

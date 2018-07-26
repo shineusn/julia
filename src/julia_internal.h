@@ -945,7 +945,7 @@ extern jl_sym_t *core_sym;    extern jl_sym_t *globalref_sym;
 extern jl_sym_t *error_sym;   extern jl_sym_t *amp_sym;
 extern jl_sym_t *module_sym;  extern jl_sym_t *colons_sym;
 extern jl_sym_t *export_sym;  extern jl_sym_t *import_sym;
-extern jl_sym_t *importall_sym; extern jl_sym_t *using_sym;
+extern jl_sym_t *using_sym;
 extern jl_sym_t *goto_sym;    extern jl_sym_t *goto_ifnot_sym;
 extern jl_sym_t *label_sym;   extern jl_sym_t *return_sym;
 extern jl_sym_t *unreachable_sym; extern jl_sym_t *tuple_sym;

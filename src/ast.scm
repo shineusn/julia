@@ -200,7 +200,7 @@
                     (string.join (map deparse (cdr (cadddr e))) "\n") "\n"
                     "end"))
            ;; misc syntax forms
-           ((import importall using)
+           ((import using)
             (define (deparse-path e)
               (cond ((and (pair? e) (eq? (car e) '|.|))
                      (let loop ((lst   (cdr e))

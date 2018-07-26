@@ -30,7 +30,7 @@ jl_sym_t *call_sym;    jl_sym_t *invoke_sym;
 jl_sym_t *dots_sym;    jl_sym_t *empty_sym;
 jl_sym_t *module_sym;  jl_sym_t *slot_sym;
 jl_sym_t *export_sym;  jl_sym_t *import_sym;
-jl_sym_t *importall_sym; jl_sym_t *toplevel_sym;
+jl_sym_t *toplevel_sym;
 jl_sym_t *quote_sym;   jl_sym_t *amp_sym;
 jl_sym_t *top_sym;     jl_sym_t *colons_sym;
 jl_sym_t *line_sym;    jl_sym_t *jl_incomplete_sym;
@@ -345,7 +345,6 @@ void jl_init_frontend(void)
     export_sym = jl_symbol("export");
     import_sym = jl_symbol("import");
     using_sym = jl_symbol("using");
-    importall_sym = jl_symbol("importall");
     assign_sym = jl_symbol("=");
     body_sym = jl_symbol("body");
     colons_sym = jl_symbol("::");
