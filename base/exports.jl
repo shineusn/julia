@@ -297,7 +297,6 @@ export
     muladd,
     nextfloat,
     nextpow,
-    nextpow2,
     nextprod,
     numerator,
     one,

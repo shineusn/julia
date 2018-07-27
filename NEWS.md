@@ -1323,6 +1323,8 @@ Deprecated or removed
 
   * `squeeze` is deprecated in favor of `dropdims`.
 
+  * `nextpow2`/`prevpow2` have been deprecated in favor of the more general `nextpow`/`prevpow` functions.
+
 Command-line option changes
 ---------------------------
 

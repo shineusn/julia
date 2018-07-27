@@ -1771,6 +1771,9 @@ end
 # PR #28223
 @deprecate code_llvm_raw(f, types=Tuple) code_llvm(f, types; raw=true)
 
+@deprecate nextpow2(x) nextpow(2, x)
+@deprecate prevpow2(x) prevpow(2, x)
+
 # END 0.7 deprecations
 
 # BEGIN 1.0 deprecations

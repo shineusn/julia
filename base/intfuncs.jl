@@ -309,43 +309,10 @@ end
 # optimization: promote the modulus m to BigInt only once (cf. widemul in generic powermod above)
 powermod(x::Integer, p::Integer, m::Union{Int128,UInt128}) = oftype(m, powermod(x, p, big(m)))
 
-# smallest power of 2 >= x
-
-"""
-    nextpow2(n::Integer)
-
-The smallest power of two not less than `n`. Returns 0 for `n==0`, and returns
-`-nextpow2(-n)` for negative arguments.
-
-# Examples
-```jldoctest
-julia> nextpow2(16)
-16
-
-julia> nextpow2(17)
-32
-```
-"""
-nextpow2(x::Unsigned) = oneunit(x)<<((sizeof(x)<<3)-leading_zeros(x-oneunit(x)))
-nextpow2(x::Integer) = reinterpret(typeof(x),x < 0 ? -nextpow2(unsigned(-x)) : nextpow2(unsigned(x)))
-
-"""
-    prevpow2(n::Integer)
-
-The largest power of two not greater than `n`. Returns 0 for `n==0`, and returns
-`-prevpow2(-n)` for negative arguments.
-
-# Examples
-```jldoctest
-julia> prevpow2(5)
-4
-
-julia> prevpow2(0)
-0
-```
-"""
-prevpow2(x::Unsigned) = one(x) << unsigned((sizeof(x)<<3)-leading_zeros(x)-1)
-prevpow2(x::Integer) = reinterpret(typeof(x),x < 0 ? -prevpow2(unsigned(-x)) : prevpow2(unsigned(x)))
+_nextpow2(x::Unsigned) = oneunit(x)<<((sizeof(x)<<3)-leading_zeros(x-oneunit(x)))
+_nextpow2(x::Integer) = reinterpret(typeof(x),x < 0 ? -_nextpow2(unsigned(-x)) : _nextpow2(unsigned(x)))
+_prevpow2(x::Unsigned) = one(x) << unsigned((sizeof(x)<<3)-leading_zeros(x)-1)
+_prevpow2(x::Integer) = reinterpret(typeof(x),x < 0 ? -_prevpow2(unsigned(-x)) : _prevpow2(unsigned(x)))
 
 """
     ispow2(n::Integer) -> Bool
@@ -387,6 +354,10 @@ julia> nextpow(4, 16)
 See also [`prevpow`](@ref).
 """
 function nextpow(a::Real, x::Real)
+    # Special case fast path for Integer/Unsiged a == 2.
+    # This is a very common case. Constant prop will make sure that a call site
+    # specified as `nextpow(2, x)` will get this special case inlined.
+    a == 2 && (isa(x, Integer) || isa(x, Unsigned)) && return _nextpow2(x)
     a <= 1 && throw(DomainError(a, "`a` must be greater than 1."))
     x <= 0 && throw(DomainError(x, "`x` must be positive."))
     x <= 1 && return one(a)
@@ -419,6 +390,8 @@ julia> prevpow(4, 16)
 See also [`nextpow`](@ref).
 """
 function prevpow(a::Real, x::Real)
+    # See comment in nextpos() for a == special case.
+    a == 2 && (isa(x, Integer) || isa(x, Unsigned)) && return _prevpow2(x)
     a <= 1 && throw(DomainError(a, "`a` must be greater than 1."))
     x < 1 && throw(DomainError(x, "`x` must be ≥ 1."))
     n = floor(Integer,log(a, x))
