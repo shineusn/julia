@@ -1771,6 +1771,8 @@ end
 @deprecate code_llvm_raw(f, types=Tuple) code_llvm(f, types; raw=true)
 
 @deprecate eps ulp
+@deprecate realmin floatmin
+@deprecate realmax floatmax
 
 # END 0.7 deprecations
 
